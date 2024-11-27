@@ -45,25 +45,25 @@ jobs:
           if [ "$SCHEMA_VERSION" != "$LAST_KNOWN_VERSION" ]; then
             echo "New version found, proceed with generating the HTML."
             echo $SCHEMA_VERSION > last_known_version.txt
-            echo "::set-output name=version_changed::true"
+            echo "version_changed=true" >> $GITHUB_ENV  # Updated to use environment files
           else
             echo "No new version. Skip the process."
-            echo "::set-output name=version_changed::false"
+            echo "version_changed=false" >> $GITHUB_ENV  # Updated to use environment files
           fi
 
       - name: Generate HTML if version changed
-        if: steps.fetch_version.outputs.version_changed == 'true'
+        if: env.version_changed == 'true'
         run: |
           python generate_zot2csl.py  # Run your Python script to generate the HTML
 
       - name: Upload HTML output
-        if: steps.fetch_version.outputs.version_changed == 'true'
-        uses: actions/upload-artifact@v3  # Updated to use v3
+        if: env.version_changed == 'true'
+        uses: actions/upload-artifact@v4  # Updated to use v4
         with:
           name: zotero-schema-html
           path: zotero_schema_output.html
 
       - name: Notify if no new version
-        if: steps.fetch_version.outputs.version_changed == 'false'
+        if: env.version_changed == 'false'
         run: |
           echo "No new version detected, skipping HTML generation."
