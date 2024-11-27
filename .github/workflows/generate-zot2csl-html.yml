@@ -1,7 +1,7 @@
 name: Generate Zotero to CSL Mappings HTML
 
 on:
-  workflow_dispatch:  # This will allow manual triggering from GitHub UI
+  workflow_dispatch:  # Manual trigger
 
 jobs:
   generate-html:
@@ -54,11 +54,11 @@ jobs:
       - name: Generate HTML if version changed
         if: steps.fetch_version.outputs.version_changed == 'true'
         run: |
-          python generate_zot2csl.py
+          python generate_zot2csl.py  # Run your Python script to generate the HTML
 
       - name: Upload HTML output
         if: steps.fetch_version.outputs.version_changed == 'true'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3  # Updated to use v3
         with:
           name: zotero-schema-html
           path: zotero_schema_output.html
