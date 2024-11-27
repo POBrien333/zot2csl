@@ -1,3 +1,4 @@
+import os
 import json
 import requests
 from datetime import datetime
@@ -163,6 +164,15 @@ schema_version = schema.get("version", "unknown version")
 
 # Generate HTML output
 html_output = generate_html(schema, schema_url, schema_version)
+
+# Create folder if it doesn't exist
+output_folder = "docs"
+if not os.path.exists(output_folder):
+    os.makedirs(output_folder)
+
+# Write the output file inside the folder
+with open(f"{output_folder}/zotero_schema_output.html", "w", encoding="utf-8") as file:
+    file.write(html_output)
 
 # Write to an HTML file
 with open("zotero_schema_output.html", "w", encoding="utf-8") as file:
