@@ -3,7 +3,6 @@ A simple Python script that  creates up-to-date mappings from Zotero to CSL that
 
 The script takes the Zotero schema from the [Zotero repository](https://github.com/zotero/zotero-schema/blob/master/schema.json) and outputs all available item types as well as the `Zotero UI label` <> `Zotero field` <> `CSL variable`.
 
-# Changelog
-## v1
-
+## Changelog
+### v1 - 27/11/2024
  ✨ **New!**: The script is alive
