@@ -40,8 +40,7 @@ def generate_html(schema, schema_url, schema_version):
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Zotero to CSL Mappings</title>
-        <!-- Link to the external CSS file -->
-        <link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" type="text/css" href="https://github.com/POBrien333/zot2csl/blob/main/zot2csl_html/style.css">
     </head>
     <body>
         <h1>Zotero to CSL Mappings</h1>
