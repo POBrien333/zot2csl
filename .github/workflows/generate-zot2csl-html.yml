@@ -60,17 +60,17 @@ jobs:
         if: env.version_changed == 'true'
         run: |
           # Create a directory for the output HTML file (if it doesn't exist)
-          mkdir -p zot2csl_html
+          mkdir -p doc
 
           # Move the generated HTML file to the output directory
-          mv zotero_schema_output.html zot2csl_html/zotero_schema_output.html
+          mv index.html docs/index.html
 
           # Set up git config for commit
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
           # Add the output file to git
-          git add zot2csl_html/zotero_schema_output.html
+          git add docs/index.html
 
           # Commit and push the changes
           git commit -m "Update Zotero to CSL HTML mapping - new schema version"
