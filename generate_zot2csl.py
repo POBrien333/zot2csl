@@ -10,27 +10,25 @@ def load_schema_from_url(url):
 
 # Function to get CSL mapping for a given Zotero item type
 def get_csl_mapping_for_zotero_item_type(schema, item_type):
-    # Extract CSL types from the schema
     csl_types = schema.get('csl', {}).get('types', {})
-    
-    # Handle reverse mapping: Check if the item_type is a value for any CSL type
     for csl_type, zotero_types in csl_types.items():
         if item_type in zotero_types:
-            return [csl_type]  # Return the matching CSL type
-    
-    # If no CSL types are found, log a message and set a default message
+            return [csl_type]
     return ["No CSL mapping found"]
 
 # Function to generate the HTML based on the schema
 def generate_html(schema, schema_url, schema_version):
-    # Get the current date
     current_date = datetime.now().strftime("%Y-%m-%d")
+    current_time = datetime.now().strftime("%H:%M")  # Exact time in hours:minutes
 
     # Extract relevant parts of the schema
     item_types = schema.get('itemTypes', [])
-    csl_types = schema.get('csl', {}).get('types', {})  # CSL type mapping
-    csl_fields = schema.get('csl', {}).get('fields', {})  # CSL fields to variables
-    locales = schema.get('locales', {}).get('en-GB', {}).get('fields', {})
+    csl_types = schema.get('csl', {}).get('types', {})
+    csl_fields = schema.get('csl', {}).get('fields', {})
+    csl_names = schema.get('csl', {}).get('names', {})  # Map of creatorTypes to CSL variables
+    locales = schema.get('locales', {}).get('en-GB', {})
+    creator_ui_labels = locales.get('creatorTypes', {})  # UI labels for creatorTypes
+    field_ui_labels = locales.get('fields', {})  # UI labels for fields
 
     # Initialize the HTML structure
     html = f'''
@@ -40,11 +38,11 @@ def generate_html(schema, schema_url, schema_version):
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Zotero to CSL Mappings</title>
-        <link rel="stylesheet" type="text/css" href="https://github.com/POBrien333/zot2csl/blob/main/zot2csl_html/style.css">
+        <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
         <h1>Zotero to CSL Mappings</h1>
-        <p>Extracted on <strong>{current_date}</strong> from <strong>version {schema_version}</strong> of the Zotero schema found at <a href="{schema_url}">{schema_url}</a></p>
+        <p>Extracted on {current_date} at {current_time} from version {schema_version} found at <a href="{schema_url}">{schema_url}</a></p>
         <div class="toc">
             <h2>Table of Contents</h2>
             <ul>
@@ -53,15 +51,10 @@ def generate_html(schema, schema_url, schema_version):
     # Generate the Table of Contents with CSL mapping
     for item in item_types:
         item_type = item['itemType']
-        
-        # Correctly lookup CSL types from csl["types"]
         csl_type = get_csl_mapping_for_zotero_item_type(schema, item_type)
-        
-        # Join multiple CSL types with a comma if necessary
         csl_type_str = ', '.join(csl_type)
-
         html += f'<li><a href="#{item_type}">{item_type} → {csl_type_str}</a></li>\n'
-    
+
     html += '''
             </ul>
         </div>
@@ -70,41 +63,72 @@ def generate_html(schema, schema_url, schema_version):
     # Generate details for each item type with the correct CSL mapping in the headings
     for item in item_types:
         item_type = item['itemType']
-        
-        # Correctly lookup CSL types from csl["types"]
         csl_type = get_csl_mapping_for_zotero_item_type(schema, item_type)
-        
-        # Join multiple CSL types with a comma if necessary
         csl_type_str = ', '.join(csl_type)
 
         html += f'''
         <div class="item-type" id="{item_type}">
             <h2>{item_type} → {csl_type_str}</h2>
-            <table>
-                <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
-                </tr>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
         '''
 
-        # Process fields for each item type
+        # Process creators
+        html += '''
+                <tr>
+                    <th colspan="3">Creators</th>
+                </tr>
+        '''
+        creator_types = item.get('creatorTypes', [])
+        if creator_types:
+            for creator in creator_types:
+                zotero_creator = creator['creatorType']
+                primary = " (Primary)" if creator.get("primary", False) else ""
+                
+                # If Primary, map to CSL variable "author"
+                csl_creator = "author" if creator.get("primary", False) else csl_names.get(zotero_creator, "No CSL mapping found")
+                
+                ui_label = creator_ui_labels.get(zotero_creator, zotero_creator)
+                html += f'''
+                    <tr>
+                        <td>{ui_label}</td>
+                        <td>{zotero_creator}</td>
+                        <td>{csl_creator}</td>
+                    </tr>
+                '''
+        else:
+            html += '''
+                <tr>
+                    <td colspan="3">No creators available for this item type.</td>
+                </tr>
+            '''
+
+        # Process other metadata
+        html += '''
+                <tr>
+                    <th colspan="3">Other Metadata</th>
+                </tr>
+        '''
         for field in item['fields']:
             zotero_field = field['field']
-            ui_label = locales.get(zotero_field, zotero_field)
-            
-            # Match CSL variable (check against csl_fields)
+            ui_label = field_ui_labels.get(zotero_field, zotero_field)
             csl_variable = ''
             for category, fields in csl_fields.items():
-                if isinstance(fields, dict):  # Handle fields that map to a dictionary (date, names)
+                if isinstance(fields, dict):
                     for sub_field, csl_var in fields.items():
                         if zotero_field in csl_var:
                             csl_variable = sub_field
                             break
-                elif zotero_field in fields:  # If it's a list of possible Zotero fields
-                    csl_variable = category  # Use the category as the CSL variable
+                elif zotero_field in fields:
+                    csl_variable = category
 
-            # Add row to the table
             html += f'''
                 <tr>
                     <td>{ui_label}</td>
@@ -112,8 +136,9 @@ def generate_html(schema, schema_url, schema_version):
                     <td>{csl_variable}</td>
                 </tr>
             '''
-        
+
         html += '''
+            </tbody>
             </table>
         </div>
         '''
@@ -136,7 +161,7 @@ schema = load_schema_from_url(schema_url)
 # Get the schema version
 schema_version = schema.get("version", "unknown version")
 
-# Generate the HTML output
+# Generate HTML output
 html_output = generate_html(schema, schema_url, schema_version)
 
 # Write to an HTML file
