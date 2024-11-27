@@ -1,5 +1,5 @@
 # zot2csl
-A simple Python script that  creates up-to-date mappings from Zotero to CSL and continues [Aurimav's](https://github.com/aurimasv/) [z2csl](https://github.com/aurimasv/z2csl) extension.
+A simple Python script that  creates up-to-date mappings from Zotero to CSL and continues [Aurimasv's](https://github.com/aurimasv/) [z2csl](https://github.com/aurimasv/z2csl) extension.
 
 See the field mappings visualised here:
 👉[zot2csl HTML Output](https://pobrien333.github.io/zot2csl/)👈
