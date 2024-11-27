@@ -54,7 +54,7 @@ jobs:
       - name: Generate HTML if version changed
         if: steps.fetch_version.outputs.version_changed == 'true'
         run: |
-          python generate_html.py  # Run your Python script to generate the HTML
+          python generate_zot2csl.py
 
       - name: Upload HTML output
         if: steps.fetch_version.outputs.version_changed == 'true'
