@@ -5,12 +5,11 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Zotero to CSL Mappings</title>
-        <!-- Link to the external CSS file -->
         <link rel="stylesheet" type="text/css" href="style.css">
     </head>
     <body>
         <h1>Zotero to CSL Mappings</h1>
-        <p>Extracted on <strong>2024-11-27</strong> from <strong>version 32</strong> of the Zotero schema found at <a href="https://raw.githubusercontent.com/zotero/zotero-schema/master/schema.json">https://raw.githubusercontent.com/zotero/zotero-schema/master/schema.json</a></p>
+        <p>Extracted on 2024-11-27 at 16:44 from version 32 found at <a href="https://raw.githubusercontent.com/zotero/zotero-schema/master/schema.json">https://raw.githubusercontent.com/zotero/zotero-schema/master/schema.json</a></p>
         <div class="toc">
             <h2>Table of Contents</h2>
             <ul>
@@ -60,23 +59,62 @@
     
         <div class="item-type" id="annotation">
             <h2>annotation → No CSL mapping found</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
                 </tr>
         
+                <tr>
+                    <td colspan="3">No creators available for this item type.</td>
+                </tr>
+            
+                <tr>
+                    <th colspan="3">Other Metadata</th>
+                </tr>
+        
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="artwork">
             <h2>artwork → graphic</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Artist</td>
+                        <td>artist</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -169,16 +207,32 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="attachment">
             <h2>attachment → document</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                <tr>
+                    <td colspan="3">No creators available for this item type.</td>
+                </tr>
+            
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -199,16 +253,52 @@
                     <td>URL</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="audioRecording">
             <h2>audioRecording → song</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Performer</td>
+                        <td>performer</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Composer</td>
+                        <td>composer</td>
+                        <td>composer</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Words By</td>
+                        <td>wordsBy</td>
+                        <td>No CSL mapping found</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -337,16 +427,46 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="bill">
             <h2>bill → bill</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Sponsor</td>
+                        <td>sponsor</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Cosponsor</td>
+                        <td>cosponsor</td>
+                        <td>No CSL mapping found</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -451,16 +571,46 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="blogPost">
             <h2>blogPost → post-weblog</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Commenter</td>
+                        <td>commenter</td>
+                        <td>No CSL mapping found</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -529,16 +679,58 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="book">
             <h2>book → book</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Editor</td>
+                        <td>editor</td>
+                        <td>editor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Series Editor</td>
+                        <td>seriesEditor</td>
+                        <td>collection-editor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -673,16 +865,64 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="bookSection">
             <h2>bookSection → chapter</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Editor</td>
+                        <td>editor</td>
+                        <td>editor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Book Author</td>
+                        <td>bookAuthor</td>
+                        <td>container-author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Series Editor</td>
+                        <td>seriesEditor</td>
+                        <td>collection-editor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -823,16 +1063,46 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="case">
             <h2>case → legal_case</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Counsel</td>
+                        <td>counsel</td>
+                        <td>No CSL mapping found</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -925,16 +1195,40 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="computerProgram">
             <h2>computerProgram → software</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Programmer</td>
+                        <td>programmer</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -1051,16 +1345,58 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="conferencePaper">
             <h2>conferencePaper → paper-conference</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Editor</td>
+                        <td>editor</td>
+                        <td>editor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Series Editor</td>
+                        <td>seriesEditor</td>
+                        <td>collection-editor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -1195,16 +1531,40 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="dataset">
             <h2>dataset → dataset</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -1333,16 +1693,58 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="dictionaryEntry">
             <h2>dictionaryEntry → entry-dictionary</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Editor</td>
+                        <td>editor</td>
+                        <td>editor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Series Editor</td>
+                        <td>seriesEditor</td>
+                        <td>collection-editor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -1483,16 +1885,58 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="document">
             <h2>document → document</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Editor</td>
+                        <td>editor</td>
+                        <td>editor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Reviewed Author</td>
+                        <td>reviewedAuthor</td>
+                        <td>reviewed-author</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -1579,16 +2023,46 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="email">
             <h2>email → personal_communication</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Recipient</td>
+                        <td>recipient</td>
+                        <td>recipient</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -1645,16 +2119,58 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="encyclopediaArticle">
             <h2>encyclopediaArticle → entry-encyclopedia</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Editor</td>
+                        <td>editor</td>
+                        <td>editor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Series Editor</td>
+                        <td>seriesEditor</td>
+                        <td>collection-editor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -1795,16 +2311,52 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="film">
             <h2>film → motion_picture</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Director</td>
+                        <td>director</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Scriptwriter</td>
+                        <td>scriptwriter</td>
+                        <td>script-writer</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Producer</td>
+                        <td>producer</td>
+                        <td>producer</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -1909,16 +2461,40 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="forumPost">
             <h2>forumPost → post</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -1987,16 +2563,34 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="hearing">
             <h2>hearing → hearing</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>author</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -2107,16 +2701,46 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="instantMessage">
             <h2>instantMessage → personal_communication</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Recipient</td>
+                        <td>recipient</td>
+                        <td>recipient</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -2173,16 +2797,52 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="interview">
             <h2>interview → interview</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Interview With</td>
+                        <td>interviewee</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Interviewer</td>
+                        <td>interviewer</td>
+                        <td>interviewer</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -2269,16 +2929,58 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="journalArticle">
             <h2>journalArticle → article-journal</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Editor</td>
+                        <td>editor</td>
+                        <td>editor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Reviewed Author</td>
+                        <td>reviewedAuthor</td>
+                        <td>reviewed-author</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -2419,16 +3121,46 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="letter">
             <h2>letter → personal_communication</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Recipient</td>
+                        <td>recipient</td>
+                        <td>recipient</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -2515,16 +3247,52 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="magazineArticle">
             <h2>magazineArticle → article-magazine</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Reviewed Author</td>
+                        <td>reviewedAuthor</td>
+                        <td>reviewed-author</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -2635,16 +3403,46 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="manuscript">
             <h2>manuscript → manuscript</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -2743,16 +3541,46 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="map">
             <h2>map → map</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Cartographer</td>
+                        <td>cartographer</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Series Editor</td>
+                        <td>seriesEditor</td>
+                        <td>collection-editor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -2875,16 +3703,52 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="newspaperArticle">
             <h2>newspaperArticle → article-newspaper</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Reviewed Author</td>
+                        <td>reviewedAuthor</td>
+                        <td>reviewed-author</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -3001,28 +3865,74 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="note">
             <h2>note → document</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
                 </tr>
         
+                <tr>
+                    <td colspan="3">No creators available for this item type.</td>
+                </tr>
+            
+                <tr>
+                    <th colspan="3">Other Metadata</th>
+                </tr>
+        
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="patent">
             <h2>patent → patent</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Inventor</td>
+                        <td>inventor</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Attorney/Agent</td>
+                        <td>attorneyAgent</td>
+                        <td>No CSL mapping found</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -3145,16 +4055,46 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="podcast">
             <h2>podcast → broadcast</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Podcaster</td>
+                        <td>podcaster</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Guest</td>
+                        <td>guest</td>
+                        <td>guest</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -3229,16 +4169,58 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="preprint">
             <h2>preprint → article</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Editor</td>
+                        <td>editor</td>
+                        <td>editor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Reviewed Author</td>
+                        <td>reviewedAuthor</td>
+                        <td>reviewed-author</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -3367,16 +4349,40 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="presentation">
             <h2>presentation → speech</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Presenter</td>
+                        <td>presenter</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -3451,16 +4457,64 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="radioBroadcast">
             <h2>radioBroadcast → broadcast</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Director</td>
+                        <td>director</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Scriptwriter</td>
+                        <td>scriptwriter</td>
+                        <td>script-writer</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Producer</td>
+                        <td>producer</td>
+                        <td>producer</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Cast Member</td>
+                        <td>castMember</td>
+                        <td>performer</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Guest</td>
+                        <td>guest</td>
+                        <td>guest</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -3577,16 +4631,52 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="report">
             <h2>report → report</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Series Editor</td>
+                        <td>seriesEditor</td>
+                        <td>collection-editor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -3703,16 +4793,40 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="standard">
             <h2>standard → standard</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -3859,16 +4973,40 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="statute">
             <h2>statute → legislation</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -3967,16 +5105,40 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="thesis">
             <h2>thesis → thesis</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -4081,16 +5243,64 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="tvBroadcast">
             <h2>tvBroadcast → broadcast</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Director</td>
+                        <td>director</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Scriptwriter</td>
+                        <td>scriptwriter</td>
+                        <td>script-writer</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Producer</td>
+                        <td>producer</td>
+                        <td>producer</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Cast Member</td>
+                        <td>castMember</td>
+                        <td>performer</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Guest</td>
+                        <td>guest</td>
+                        <td>guest</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -4207,16 +5417,58 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="videoRecording">
             <h2>videoRecording → motion_picture</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Director</td>
+                        <td>director</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Scriptwriter</td>
+                        <td>scriptwriter</td>
+                        <td>script-writer</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Producer</td>
+                        <td>producer</td>
+                        <td>producer</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Cast Member</td>
+                        <td>castMember</td>
+                        <td>performer</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -4345,16 +5597,46 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
         <div class="item-type" id="webpage">
             <h2>webpage → webpage</h2>
-            <table>
+            <table border="1" cellpadding="5" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>UI Label</th>
+                        <th>Zotero field</th>
+                        <th>CSL variable</th>
+                    </tr>
+                </thead>
+                <tbody>
+        
                 <tr>
-                    <th>UI Label</th>
-                    <th>Zotero field</th>
-                    <th>CSL variable</th>
+                    <th colspan="3">Creators</th>
+                </tr>
+        
+                    <tr>
+                        <td>Author</td>
+                        <td>author</td>
+                        <td>author</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Contributor</td>
+                        <td>contributor</td>
+                        <td>contributor</td>
+                    </tr>
+                
+                    <tr>
+                        <td>Translator</td>
+                        <td>translator</td>
+                        <td>translator</td>
+                    </tr>
+                
+                <tr>
+                    <th colspan="3">Other Metadata</th>
                 </tr>
         
                 <tr>
@@ -4423,6 +5705,7 @@
                     <td>note</td>
                 </tr>
             
+            </tbody>
             </table>
         </div>
         
