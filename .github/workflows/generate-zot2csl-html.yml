@@ -18,65 +18,24 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests jq
+          pip install requests
 
-      - name: Fetch the latest schema version
-        id: fetch_version
+      - name: Generate HTML output
         run: |
-          # Fetch the schema JSON from GitHub
-          curl -s https://raw.githubusercontent.com/zotero/zotero-schema/master/schema.json > schema.json
-          
-          # Extract the version from the schema
-          SCHEMA_VERSION=$(jq -r '.version' schema.json)
-          
-          # Output the version
-          echo "Schema version is $SCHEMA_VERSION"
-          
-          # Check if the version has changed by comparing with the stored version
-          if [ -f last_known_version.txt ]; then
-            LAST_KNOWN_VERSION=$(cat last_known_version.txt)
-            echo "Last known version is $LAST_KNOWN_VERSION"
-          else
-            LAST_KNOWN_VERSION="none"
-            echo "No previous version found."
-          fi
-
-          # Compare versions, proceed only if different
-          if [ "$SCHEMA_VERSION" != "$LAST_KNOWN_VERSION" ]; then
-            echo "New version found, proceed with generating the HTML."
-            echo $SCHEMA_VERSION > last_known_version.txt
-            echo "version_changed=true" >> $GITHUB_ENV  # Updated to use environment files
-          else
-            echo "No new version. Skip the process."
-            echo "version_changed=false" >> $GITHUB_ENV  # Updated to use environment files
-          fi
-
-      - name: Generate HTML if version changed
-        if: env.version_changed == 'true'
-        run: |
-          python generate_zot2csl.py  # Run your Python script to generate the HTML
+          python generate_zot2csl.py
 
       - name: Commit and push HTML output to repository
-        if: env.version_changed == 'true'
         run: |
-          # Create a directory for the output HTML file (if it doesn't exist)
-          mkdir -p doc
-
-          # Move the generated HTML file to the output directory
+          # Ensure the docs directory exists
+          mkdir -p docs
+          # Move the generated file (index.html) to the docs directory
           mv index.html docs/index.html
-
-          # Set up git config for commit
+          
+          # Configure Git
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-
-          # Add the output file to git
+          
+          # Stage, commit, and push changes
           git add docs/index.html
-
-          # Commit and push the changes
-          git commit -m "Update Zotero to CSL HTML mapping - new schema version"
+          git commit -m "Update Zotero to CSL HTML mapping - forced update"
           git push
-
-      - name: Notify if no new version
-        if: env.version_changed == 'false'
-        run: |
-          echo "No new version detected, skipping HTML generation."
