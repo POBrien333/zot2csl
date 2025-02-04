@@ -8,5 +8,7 @@ The script takes the Zotero schema from the [Zotero repository](https://github.c
 This script will be run *ad hoc* when a new schema is available. Please contact us if a new version needs to be generated.
 
 ## Changelog
+### v1.1 - 04/02/2025
+ ✨ Fix issue with baseFields
 ### v1 - 27/11/2024
  ✨ **New!**: The script is alive
