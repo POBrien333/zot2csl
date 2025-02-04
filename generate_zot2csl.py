@@ -145,7 +145,7 @@ schema_version = schema.get("version", "unknown version")
 html_output = generate_html(schema, schema_url, schema_version)
 
 # Write to an HTML file
-with open("zotero_schema_output.html", "w", encoding="utf-8") as file:
+with open("index.html", "w", encoding="utf-8") as file:
     file.write(html_output)
 
-print("HTML file has been generated: zotero_schema_output.html")
+print("HTML file has been generated: index.html")
