@@ -1,149 +1,122 @@
-import json
+#!/usr/bin/env python3
+"""
+Generate a console listing of Zotero item types with fields and creators,
+inserting creator types immediately after the "title" field.
+
+Fixes the "unhashable type: 'dict'" error by normalising field/creator entries
+that can be either strings or dicts in the Zotero schema.
+"""
+import sys
 import requests
-from datetime import datetime
 
-# Function to load the schema from a URL
-def load_schema_from_url(url):
-    print(f"Fetching schema from {url}")
+SCHEMA_URL = "https://raw.githubusercontent.com/zotero/zotero-schema/master/schema.json"
+LOCALE = "en-US"
+
+def fetch_schema(url=SCHEMA_URL):
     try:
-        response = requests.get(url, timeout=10)
-        print(f"HTTP Status Code: {response.status_code}")
-        response.raise_for_status()  # Raise for bad HTTP responses
-        schema = response.json()
-        print("Schema top-level keys:", list(schema.keys()))
-        if 'locales' in schema:
-            print("Locales section found. en-US itemTypes:", list(schema.get('locales', {}).get('en-US', {}).get('itemTypes', {}).keys())[:5], "...")
-        else:
-            print("Error: 'locales' key not found in schema")
-        return schema
-    except requests.RequestException as e:
-        print(f"Error fetching schema: {e}")
-        return {}
-    except json.JSONDecodeError as e:
-        print(f"Error parsing JSON: {e}")
+        r = requests.get(url, timeout=10)
+        r.raise_for_status()
+        return r.json()
+    except Exception as e:
+        print("Error fetching schema:", e, file=sys.stderr)
         return {}
 
-# Function to get the en-US label for a Zotero item type
-def get_item_type_label(schema, item_type):
-    locales = schema.get('locales', {})
-    en_us = locales.get('en-US', {})
-    item_types = en_us.get('itemTypes', {})
-    label = item_types.get(item_type, item_type)
-    print(f"Looking up label for {item_type}: {label}")
-    return label
+def normalize_field_entry(field_entry):
+    """
+    Accept either:
+      - "title" (str)
+      - {"field": "title", "baseField": "title", ...}
+    Return the canonical field key string (e.g. "title").
+    """
+    if isinstance(field_entry, str):
+        return field_entry
+    if isinstance(field_entry, dict):
+        # Prefer explicit 'field', fallback to 'baseField'
+        return field_entry.get("field") or field_entry.get("baseField") or str(field_entry)
+    return str(field_entry)
 
-# Function to get CSL mapping for a given Zotero item type
-def get_csl_mapping_for_zotero_item_type(schema, item_type):
-    csl_types = schema.get('csl', {}).get('types', {})
-    for csl_type, zotero_types in csl_types.items():
-        if item_type in zotero_types:
-            return [csl_type]
-    return ["No CSL mapping found"]
+def normalize_creator_entry(creator_entry):
+    """
+    Accept either:
+      - "author" (str)
+      - {"creatorType": "author", "primary": True}
+    Return tuple (creator_key, primary_bool).
+    """
+    if isinstance(creator_entry, str):
+        return creator_entry, False
+    if isinstance(creator_entry, dict):
+        return creator_entry.get("creatorType") or creator_entry.get("type") or str(creator_entry), bool(creator_entry.get("primary", False))
+    return str(creator_entry), False
 
-# UI labels for Zotero fields
-field_ui_labels = {
-    "title": "Title",
-    "abstractNote": "Abstract Note",
-    "bookTitle": "Book Title",
-    "publicationTitle": "Publication Title",
-    "series": "Series",
-}
+def merge_fields_and_creators(item_type_schema, fields_map, creators_map):
+    """
+    Merge fields and creatorTypes into a single ordered list,
+    placing creators right after the title field.
+    Returns list of tuples: (kind, key, label)
+      kind: 'field' or 'creator'
+      key: canonical key (for creator, add " (author)" to the key if primary)
+      label: human UI label from locales
+    """
+    fields_list = item_type_schema.get("fields", [])
+    creators_list = item_type_schema.get("creatorTypes", [])
 
-# Special field overrides
-special_field_overrides = {
-    "bookTitle": "publicationTitle"
-}
+    merged = []
+    title_seen = False
 
-# Function to generate the HTML based on the schema
-def generate_html(schema, schema_url, schema_version):
-    current_date = datetime.now().strftime("%Y-%m-%d")
-    item_types = schema.get('itemTypes', [])
-    csl_fields = schema.get('csl', {}).get('fields', {})
-    
-    html = f'''<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zotero to CSL Mappings</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>
-    <h1>Zotero to CSL Mappings</h1>
-    <p>Extracted on <strong>{current_date}</strong> from <strong>version {schema_version}</strong> of the Zotero schema found at <a href="{schema_url}">{schema_url}</a></p>
-    <div class="toc">
-        <h2>Table of Contents</h2>
-        <ul>
-'''
-    for item in item_types:
-        item_type = item['itemType']
-        item_type_label = get_item_type_label(schema, item_type)
-        csl_type = get_csl_mapping_for_zotero_item_type(schema, item_type)
-        csl_type_str = ', '.join(csl_type)
-        html += f'            <li><a href="#{item_type}">{item_type_label} → {csl_type_str}</a></li>\n'
-    
-    html += '''        </ul>
-    </div>
-'''
-    for item in item_types:
-        item_type = item['itemType']
-        item_type_label = get_item_type_label(schema, item_type)
-        csl_type = get_csl_mapping_for_zotero_item_type(schema, item_type)
-        csl_type_str = ', '.join(csl_type)
-        html += f'''    <div class="item-type" id="{item_type}">
-        <h2>{item_type_label} → {csl_type_str}</h2>
-        <table>
-            <tr>
-                <th>UI Label</th>
-                <th>Zotero Field</th>
-                <th>CSL Variable</th>
-            </tr>
-'''
-        for field in item['fields']:
-            zotero_field = field['field']
-            zotero_baseField = field.get('baseField', zotero_field)
-            lookup_field = special_field_overrides.get(zotero_field, zotero_baseField)
-            ui_label = field_ui_labels.get(zotero_field, zotero_field)
-            csl_variable = ''
-            for category, fields in csl_fields.items():
-                if isinstance(fields, dict):
-                    for sub_field, csl_var in fields.items():
-                        if lookup_field in csl_var:
-                            csl_variable = sub_field
-                            break
-                    if csl_variable:
-                        break
-                elif lookup_field in fields:
-                    csl_variable = category
-                    break
-            html += f'''            <tr>
-                <td>{ui_label}</td>
-                <td>{zotero_field}</td>
-                <td>{csl_variable}</td>
-            </tr>
-'''
-        html += '''        </table>
-    </div>
-'''
-    html += '''</body>
-</html>
-'''
-    return html
+    for field_entry in fields_list:
+        field_key = normalize_field_entry(field_entry)
+        field_label = fields_map.get(field_key, field_key)
+        merged.append(("field", field_key, field_label))
 
-# URL of the Zotero schema
-schema_url = "https://raw.githubusercontent.com/zotero/zotero-schema/master/schema.json"
+        if field_key == "title":
+            title_seen = True
+            # Insert creators immediately after the title field
+            for creator_entry in creators_list:
+                c_key, primary = normalize_creator_entry(creator_entry)
+                c_label = creators_map.get(c_key, c_key)
+                display_key = f"{c_key} (author)" if primary else c_key
+                merged.append(("creator", display_key, c_label))
 
-# Fetch the schema
-schema = load_schema_from_url(schema_url)
+    # If there was no title, append creators at the end as a fallback
+    if not title_seen and creators_list:
+        for creator_entry in creators_list:
+            c_key, primary = normalize_creator_entry(creator_entry)
+            c_label = creators_map.get(c_key, c_key)
+            display_key = f"{c_key} (author)" if primary else c_key
+            merged.append(("creator", display_key, c_label))
 
-# Get the schema version
-schema_version = schema.get("version", "unknown version")
+    return merged
 
-# Generate the HTML output
-html_output = generate_html(schema, schema_url, schema_version)
+def main():
+    schema = fetch_schema()
+    if not schema:
+        sys.exit(1)
 
-# Write to an HTML file
-with open("index.html", "w", encoding="utf-8") as file:
-    file.write(html_output)
+    locales = schema.get("locales", {})
+    loc = locales.get(LOCALE, {})
+    if not loc:
+        print(f"Locale '{LOCALE}' not found in schema.", file=sys.stderr)
+        sys.exit(1)
 
-print("HTML file has been generated: index.html")
+    fields_map = loc.get("fields", {})
+    creators_map = loc.get("creatorTypes", {})
+    item_types_map = loc.get("itemTypes", {})
+
+    # itemTypes in the schema is a list of item-type objects (not a dict)
+    item_types = schema.get("itemTypes", [])
+
+    for item_schema in item_types:
+        item_key = item_schema.get("itemType")
+        if not item_key:
+            continue
+        item_label = item_types_map.get(item_key, item_key)
+        print("\n" + "=" * 60)
+        print(f"{item_label} ({item_key})")
+        print("-" * 60)
+
+        merged = merge_fields_and_creators(item_schema, fields_map, creators_map)
+        for kind, key, label in merged:
+            print(f"{kind:8} {key:30} → {label}")
+
+if __name__ == "__main__":
+    main()
