@@ -1,6 +1,7 @@
 import json
 import requests
 from datetime import datetime
+import os  # <- added to ensure docs/ exists
 
 SCHEMA_URL = "https://raw.githubusercontent.com/zotero/zotero-schema/master/schema.json"
 LOCALE = "en-US"
@@ -166,7 +167,10 @@ if not schema:
 schema_version = schema.get("version", "unknown version")
 html_output = generate_html(schema, SCHEMA_URL, schema_version)
 
-# Save to docs/index.html for GitHub Pages
+# --- Ensure docs directory exists (GitHub Pages) ---
+os.makedirs("docs", exist_ok=True)
+
+# Save the HTML output
 with open("docs/index.html", "w", encoding="utf-8") as f:
     f.write(html_output)
 
