@@ -2,19 +2,65 @@ import json
 import requests
 from datetime import datetime
 
-# Function to load the schema from a URL
+SCHEMA_URL = "https://raw.githubusercontent.com/zotero/zotero-schema/master/schema.json"
+LOCALE = "en-US"
+
+# --- Helper functions from your working console script ---
+
+def normalize_field_entry(field_entry):
+    if isinstance(field_entry, str):
+        return field_entry
+    if isinstance(field_entry, dict):
+        return field_entry.get("field") or field_entry.get("baseField") or str(field_entry)
+    return str(field_entry)
+
+def normalize_creator_entry(creator_entry):
+    if isinstance(creator_entry, str):
+        return creator_entry, False
+    if isinstance(creator_entry, dict):
+        return creator_entry.get("creatorType") or creator_entry.get("type") or str(creator_entry), bool(creator_entry.get("primary", False))
+    return str(creator_entry), False
+
+def merge_fields_and_creators(item_type_schema, fields_map, creators_map):
+    fields_list = item_type_schema.get("fields", [])
+    creators_list = item_type_schema.get("creatorTypes", [])
+
+    merged = []
+    title_seen = False
+
+    for field_entry in fields_list:
+        field_key = normalize_field_entry(field_entry)
+        field_label = fields_map.get(field_key, field_key)
+        merged.append(("field", field_key, field_label))
+
+        if field_key == "title":
+            title_seen = True
+            # Insert creators immediately after the title
+            for creator_entry in creators_list:
+                c_key, primary = normalize_creator_entry(creator_entry)
+                c_label = creators_map.get(c_key, c_key)
+                display_key = f"{c_key} (author)" if primary else c_key
+                merged.append(("creator", display_key, c_label))
+
+    # Fallback: append creators at the end if title missing
+    if not title_seen and creators_list:
+        for creator_entry in creators_list:
+            c_key, primary = normalize_creator_entry(creator_entry)
+            c_label = creators_map.get(c_key, c_key)
+            display_key = f"{c_key} (author)" if primary else c_key
+            merged.append(("creator", display_key, c_label))
+
+    return merged
+
+# --- Existing HTML generator functions (only change: creator handling) ---
+
 def load_schema_from_url(url):
     print(f"Fetching schema from {url}")
     try:
         response = requests.get(url, timeout=10)
-        print(f"HTTP Status Code: {response.status_code}")
-        response.raise_for_status()  # Raise for bad HTTP responses
+        response.raise_for_status()
         schema = response.json()
         print("Schema top-level keys:", list(schema.keys()))
-        if 'locales' in schema:
-            print("Locales section found. en-US itemTypes:", list(schema.get('locales', {}).get('en-US', {}).get('itemTypes', {}).keys())[:5], "...")
-        else:
-            print("Error: 'locales' key not found in schema")
         return schema
     except requests.RequestException as e:
         print(f"Error fetching schema: {e}")
@@ -23,23 +69,12 @@ def load_schema_from_url(url):
         print(f"Error parsing JSON: {e}")
         return {}
 
-# Function to get the en-US label for a Zotero item type
 def get_item_type_label(schema, item_type):
     locales = schema.get('locales', {})
-    en_us = locales.get('en-US', {})
+    en_us = locales.get(LOCALE, {})
     item_types = en_us.get('itemTypes', {})
-    label = item_types.get(item_type, item_type)
-    print(f"Looking up label for {item_type}: {label}")
-    return label
+    return item_types.get(item_type, item_type)
 
-# Function to get the en-US label for a Zotero field
-def get_field_ui_label(schema, field):
-    locales = schema.get('locales', {})
-    en_us = locales.get('en-US', {})
-    fields_map = en_us.get('fields', {})
-    return fields_map.get(field, field)
-
-# Function to get CSL mapping for a given Zotero item type
 def get_csl_mapping_for_zotero_item_type(schema, item_type):
     csl_types = schema.get('csl', {}).get('types', {})
     for csl_type, zotero_types in csl_types.items():
@@ -47,17 +82,18 @@ def get_csl_mapping_for_zotero_item_type(schema, item_type):
             return [csl_type]
     return ["No CSL mapping found"]
 
-# Special field overrides
-special_field_overrides = {
-    "bookTitle": "publicationTitle"
-}
+# --- Main HTML generator ---
 
-# Function to generate the HTML based on the schema
 def generate_html(schema, schema_url, schema_version):
     current_date = datetime.now().strftime("%Y-%m-%d")
     item_types = schema.get('itemTypes', [])
     csl_fields = schema.get('csl', {}).get('fields', {})
-    
+
+    # Get locale maps
+    loc = schema.get('locales', {}).get(LOCALE, {})
+    fields_map = loc.get("fields", {})
+    creators_map = loc.get("creatorTypes", {})
+
     html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,10 +115,11 @@ def generate_html(schema, schema_url, schema_version):
         csl_type = get_csl_mapping_for_zotero_item_type(schema, item_type)
         csl_type_str = ', '.join(csl_type)
         html += f'            <li><a href="#{item_type}">{item_type_label} → {csl_type_str}</a></li>\n'
-    
+
     html += '''        </ul>
     </div>
 '''
+
     for item in item_types:
         item_type = item['itemType']
         item_type_label = get_item_type_label(schema, item_type)
@@ -97,29 +134,21 @@ def generate_html(schema, schema_url, schema_version):
                 <th>CSL Variable</th>
             </tr>
 '''
-        for field in item['fields']:
-            zotero_field = field['field']
-            zotero_baseField = field.get('baseField', zotero_field)
-            lookup_field = special_field_overrides.get(zotero_field, zotero_baseField)
-            ui_label = get_field_ui_label(schema, zotero_field)  # FIXED: use schema locales
-            csl_variable = ''
-            for category, fields in csl_fields.items():
-                if isinstance(fields, dict):
-                    for sub_field, csl_var in fields.items():
-                        if lookup_field in csl_var:
-                            csl_variable = sub_field
-                            break
-                    if csl_variable:
-                        break
-                elif lookup_field in fields:
-                    csl_variable = category
-                    break
-            html += f'''            <tr>
-                <td>{ui_label}</td>
-                <td>{zotero_field}</td>
-                <td>{csl_variable}</td>
+        # Merge fields and creators
+        merged_rows = merge_fields_and_creators(item, fields_map, creators_map)
+        for kind, key, label in merged_rows:
+            # Attempt to get CSL variable for fields; empty for creators
+            csl_var = ''
+            if kind == "field" and key in csl_fields:
+                csl_var = key
+            row_class = 'creator-row' if kind == 'creator' else ''
+            html += f'''            <tr class="{row_class}">
+                <td>{label}</td>
+                <td>{key}</td>
+                <td>{csl_var}</td>
             </tr>
 '''
+
         html += '''        </table>
     </div>
 '''
@@ -128,20 +157,17 @@ def generate_html(schema, schema_url, schema_version):
 '''
     return html
 
-# URL of the Zotero schema
-schema_url = "https://raw.githubusercontent.com/zotero/zotero-schema/master/schema.json"
+# --- Main script ---
 
-# Fetch the schema
-schema = load_schema_from_url(schema_url)
+schema = load_schema_from_url(SCHEMA_URL)
+if not schema:
+    exit(1)
 
-# Get the schema version
 schema_version = schema.get("version", "unknown version")
+html_output = generate_html(schema, SCHEMA_URL, schema_version)
 
-# Generate the HTML output
-html_output = generate_html(schema, schema_url, schema_version)
+# Save to docs/index.html for GitHub Pages
+with open("docs/index.html", "w", encoding="utf-8") as f:
+    f.write(html_output)
 
-# Write to an HTML file
-with open("index.html", "w", encoding="utf-8") as file:
-    file.write(html_output)
-
-print("HTML file has been generated: index.html")
+print("HTML file has been generated: docs/index.html")
