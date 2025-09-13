@@ -1,13 +1,22 @@
 import json
 import requests
 from datetime import datetime
-import os  # <- added to ensure docs/ exists
+import os
 
 SCHEMA_URL = "https://raw.githubusercontent.com/zotero/zotero-schema/master/schema.json"
 LOCALE = "en-US"
 
-# --- Helper functions from your working console script ---
+# Function to load the schema
+def load_schema():
+    try:
+        r = requests.get(SCHEMA_URL, timeout=10)
+        r.raise_for_status()
+        return r.json()
+    except Exception as e:
+        print("Error fetching schema:", e)
+        return {}
 
+# Normalize field entry
 def normalize_field_entry(field_entry):
     if isinstance(field_entry, str):
         return field_entry
@@ -15,6 +24,7 @@ def normalize_field_entry(field_entry):
         return field_entry.get("field") or field_entry.get("baseField") or str(field_entry)
     return str(field_entry)
 
+# Normalize creator entry
 def normalize_creator_entry(creator_entry):
     if isinstance(creator_entry, str):
         return creator_entry, False
@@ -22,156 +32,138 @@ def normalize_creator_entry(creator_entry):
         return creator_entry.get("creatorType") or creator_entry.get("type") or str(creator_entry), bool(creator_entry.get("primary", False))
     return str(creator_entry), False
 
-def merge_fields_and_creators(item_type_schema, fields_map, creators_map):
-    fields_list = item_type_schema.get("fields", [])
-    creators_list = item_type_schema.get("creatorTypes", [])
-
+# Merge fields and creators
+def merge_fields_and_creators(item_type_schema, fields_map, creators_map, csl_fields):
     merged = []
     title_seen = False
+    fields_list = item_type_schema.get("fields", [])
+    creators_list = item_type_schema.get("creatorTypes", [])
 
     for field_entry in fields_list:
         field_key = normalize_field_entry(field_entry)
         field_label = fields_map.get(field_key, field_key)
-        merged.append(("field", field_key, field_label))
+
+        # CSL variable lookup
+        csl_variable = ""
+        for category, fields in csl_fields.items():
+            if isinstance(fields, dict):
+                for sub_field, csl_vars in fields.items():
+                    if field_key in csl_vars:
+                        csl_variable = sub_field
+                        break
+                if csl_variable:
+                    break
+            elif field_key in fields:
+                csl_variable = category
+                break
+
+        merged.append(("field", field_key, field_label, csl_variable))
 
         if field_key == "title":
             title_seen = True
-            # Insert creators immediately after the title
             for creator_entry in creators_list:
                 c_key, primary = normalize_creator_entry(creator_entry)
                 c_label = creators_map.get(c_key, c_key)
                 display_key = f"{c_key} (author)" if primary else c_key
-                merged.append(("creator", display_key, c_label))
 
-    # Fallback: append creators at the end if title missing
+                # CSL variable for creator
+                csl_var = ""
+                if c_key in csl_fields.get("names", {}):
+                    csl_var = csl_fields["names"][c_key]
+                elif primary:
+                    csl_var = "author"
+
+                merged.append(("creator", display_key, c_label, csl_var))
+
     if not title_seen and creators_list:
         for creator_entry in creators_list:
             c_key, primary = normalize_creator_entry(creator_entry)
             c_label = creators_map.get(c_key, c_key)
             display_key = f"{c_key} (author)" if primary else c_key
-            merged.append(("creator", display_key, c_label))
+            csl_var = ""
+            if c_key in csl_fields.get("names", {}):
+                csl_var = csl_fields["names"][c_key]
+            elif primary:
+                csl_var = "author"
+            merged.append(("creator", display_key, c_label, csl_var))
 
     return merged
 
-# --- Existing HTML generator functions (only change: creator handling) ---
-
-def load_schema_from_url(url):
-    print(f"Fetching schema from {url}")
-    try:
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-        schema = response.json()
-        print("Schema top-level keys:", list(schema.keys()))
-        return schema
-    except requests.RequestException as e:
-        print(f"Error fetching schema: {e}")
-        return {}
-    except json.JSONDecodeError as e:
-        print(f"Error parsing JSON: {e}")
-        return {}
-
-def get_item_type_label(schema, item_type):
-    locales = schema.get('locales', {})
-    en_us = locales.get(LOCALE, {})
-    item_types = en_us.get('itemTypes', {})
-    return item_types.get(item_type, item_type)
-
-def get_csl_mapping_for_zotero_item_type(schema, item_type):
-    csl_types = schema.get('csl', {}).get('types', {})
-    for csl_type, zotero_types in csl_types.items():
-        if item_type in zotero_types:
-            return [csl_type]
-    return ["No CSL mapping found"]
-
-# --- Main HTML generator ---
-
-def generate_html(schema, schema_url, schema_version):
+# Generate HTML
+def generate_html(schema):
     current_date = datetime.now().strftime("%Y-%m-%d")
-    item_types = schema.get('itemTypes', [])
-    csl_fields = schema.get('csl', {}).get('fields', {})
-
-    # Get locale maps
-    loc = schema.get('locales', {}).get(LOCALE, {})
-    fields_map = loc.get("fields", {})
-    creators_map = loc.get("creatorTypes", {})
+    locales = schema.get("locales", {}).get(LOCALE, {})
+    fields_map = locales.get("fields", {})
+    creators_map = locales.get("creatorTypes", {})
+    item_types_map = locales.get("itemTypes", {})
+    item_types = schema.get("itemTypes", [])
+    csl_fields = schema.get("csl", {})
 
     html = f'''<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zotero to CSL Mappings</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zotero to CSL Mappings</title>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <h1>Zotero to CSL Mappings</h1>
-    <p>Extracted on <strong>{current_date}</strong> from <strong>version {schema_version}</strong> of the Zotero schema found at <a href="{schema_url}">{schema_url}</a></p>
-    <div class="toc">
-        <h2>Table of Contents</h2>
-        <ul>
+<h1>Zotero to CSL Mappings</h1>
+<p>Extracted on <strong>{current_date}</strong> from <strong>version {schema.get("version","unknown")}</strong> of the Zotero schema found at <a href="{SCHEMA_URL}">{SCHEMA_URL}</a></p>
+<div class="toc">
+<h2>Table of Contents</h2>
+<ul>
 '''
+
+    # Table of Contents
     for item in item_types:
-        item_type = item['itemType']
-        item_type_label = get_item_type_label(schema, item_type)
-        csl_type = get_csl_mapping_for_zotero_item_type(schema, item_type)
-        csl_type_str = ', '.join(csl_type)
-        html += f'            <li><a href="#{item_type}">{item_type_label} → {csl_type_str}</a></li>\n'
+        item_key = item.get("itemType")
+        if not item_key:
+            continue
+        item_label = item_types_map.get(item_key, item_key)
 
-    html += '''        </ul>
-    </div>
-'''
+        # CSL type mapping
+        csl_type = []
+        for ctype, zotero_types in csl_fields.get("types", {}).items():
+            if item_key in zotero_types:
+                csl_type.append(ctype)
+        if not csl_type:
+            csl_type = ["No CSL mapping found"]
+        csl_type_str = ", ".join(csl_type)
+        html += f'  <li><a href="#{item_key}">{item_label} → {csl_type_str}</a></li>\n'
 
+    html += '</ul>\n</div>\n'
+
+    # Item tables
     for item in item_types:
-        item_type = item['itemType']
-        item_type_label = get_item_type_label(schema, item_type)
-        csl_type = get_csl_mapping_for_zotero_item_type(schema, item_type)
-        csl_type_str = ', '.join(csl_type)
-        html += f'''    <div class="item-type" id="{item_type}">
-        <h2>{item_type_label} → {csl_type_str}</h2>
-        <table>
-            <tr>
-                <th>UI Label</th>
-                <th>Zotero Field</th>
-                <th>CSL Variable</th>
-            </tr>
-'''
-        # Merge fields and creators
-        merged_rows = merge_fields_and_creators(item, fields_map, creators_map)
-        for kind, key, label in merged_rows:
-            # Attempt to get CSL variable for fields; empty for creators
-            csl_var = ''
-            if kind == "field" and key in csl_fields:
-                csl_var = key
-            row_class = 'creator-row' if kind == 'creator' else ''
-            html += f'''            <tr class="{row_class}">
-                <td>{label}</td>
-                <td>{key}</td>
-                <td>{csl_var}</td>
-            </tr>
-'''
+        item_key = item.get("itemType")
+        if not item_key:
+            continue
+        item_label = item_types_map.get(item_key, item_key)
+        csl_type = []
+        for ctype, zotero_types in csl_fields.get("types", {}).items():
+            if item_key in zotero_types:
+                csl_type.append(ctype)
+        if not csl_type:
+            csl_type = ["No CSL mapping found"]
+        csl_type_str = ", ".join(csl_type)
 
-        html += '''        </table>
-    </div>
-'''
-    html += '''</body>
-</html>
-'''
+        html += f'<div class="item-type" id="{item_key}">\n<h2>{item_label} → {csl_type_str}</h2>\n<table>\n<tr><th>UI Label</th><th>Zotero Field</th><th>CSL Variable</th></tr>\n'
+
+        merged = merge_fields_and_creators(item, fields_map, creators_map, csl_fields)
+        for kind, key, label, csl_var in merged:
+            html += f'<tr><td>{label}</td><td>{key}</td><td>{csl_var}</td></tr>\n'
+
+        html += '</table>\n</div>\n'
+
+    html += '</body>\n</html>'
     return html
 
-# --- Main script ---
-
-schema = load_schema_from_url(SCHEMA_URL)
-if not schema:
-    exit(1)
-
-schema_version = schema.get("version", "unknown version")
-html_output = generate_html(schema, SCHEMA_URL, schema_version)
-
-# --- Ensure docs directory exists (GitHub Pages) ---
-os.makedirs("docs", exist_ok=True)
-
-# Save the HTML output
-with open("docs/index.html", "w", encoding="utf-8") as f:
-    f.write(html_output)
-
-print("HTML file has been generated: docs/index.html")
+# Main execution
+if __name__ == "__main__":
+    os.makedirs("docs", exist_ok=True)
+    schema = load_schema()
+    html_output = generate_html(schema)
+    with open("docs/index.html", "w", encoding="utf-8") as f:
+        f.write(html_output)
+    print("HTML file has been generated: docs/index.html")
