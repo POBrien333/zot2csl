@@ -28,8 +28,6 @@ jobs:
         run: |
           # Ensure the docs directory exists
           mkdir -p docs
-          # Move the generated file (index.html) to the docs directory
-          mv index.html docs/index.html
           
           # Configure Git
           git config user.name "github-actions"
