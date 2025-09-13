@@ -71,3 +71,8 @@ tr:nth-child(even) {
 tr:hover {
     background-color: #f1f1f1;
 }
+
+/* Highlight creator type rows with a light shade of CSL blue */
+tr.creator-row td {
+    background-color: #e6f2fa;
+}
