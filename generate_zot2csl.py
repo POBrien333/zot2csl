@@ -32,13 +32,26 @@ def get_item_type_label(schema, item_type):
     print(f"Looking up label for {item_type}: {label}")
     return label
 
+# Function to get the en-US label for a Zotero creator type
+def get_creator_type_label(schema, creator_type):
+    locales = schema.get('locales', {})
+    en_us = locales.get('en-US', {})
+    creator_types = en_us.get('creatorTypes', {})
+    label = creator_types.get(creator_type, creator_type)
+    return label
+
 # Function to get CSL mapping for a given Zotero item type
 def get_csl_mapping_for_zotero_item_type(schema, item_type):
     csl_types = schema.get('csl', {}).get('types', {})
     for csl_type, zotero_types in csl_types.items():
         if item_type in zotero_types:
             return [csl_type]
-    return ["No CSL mapping found"]
+    return ["-"]  # ✅ replaced text with dash
+
+# Function to get CSL mapping for a given Zotero creator type
+def get_csl_mapping_for_zotero_creator_type(schema, creator_type):
+    csl_names = schema.get('csl', {}).get('names', {})
+    return csl_names.get(creator_type, "-")  # ✅ replaced text with dash
 
 # UI labels for Zotero fields
 field_ui_labels = {
@@ -99,6 +112,24 @@ def generate_html(schema, schema_url, schema_version):
                 <th>CSL Variable</th>
             </tr>
 '''
+
+        # ✅ creators at the top, primary mapped to CSL "author"
+        if 'creatorTypes' in item and item['creatorTypes']:
+            for ct in item['creatorTypes']:
+                creator_type = ct['creatorType']
+                creator_label = get_creator_type_label(schema, creator_type)
+                if ct.get('primary'):
+                    csl_var = get_csl_mapping_for_zotero_creator_type(schema, 'author')
+                else:
+                    csl_var = get_csl_mapping_for_zotero_creator_type(schema, creator_type)
+                html += f'''            <tr class="creator-row">
+                <td>{creator_label}</td>
+                <td>{creator_type}</td>
+                <td>{csl_var}</td>
+            </tr>
+'''
+
+        # then list the fields
         for field in item['fields']:
             zotero_field = field['field']
             zotero_baseField = field.get('baseField', zotero_field)
@@ -116,12 +147,15 @@ def generate_html(schema, schema_url, schema_version):
                 elif lookup_field in fields:
                     csl_variable = category
                     break
+            if not csl_variable:
+                csl_variable = "-"  # ✅ replaced fallback with dash
             html += f'''            <tr>
                 <td>{ui_label}</td>
                 <td>{zotero_field}</td>
                 <td>{csl_variable}</td>
             </tr>
 '''
+
         html += '''        </table>
     </div>
 '''
