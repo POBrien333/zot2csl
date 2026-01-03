@@ -40,6 +40,14 @@ def get_creator_type_label(schema, creator_type):
     label = creator_types.get(creator_type, creator_type)
     return label
 
+# Function to get the en-US label for a Zotero field
+def get_field_label(schema, field_name):
+    locales = schema.get('locales', {})
+    en_us = locales.get('en-US', {})
+    fields = en_us.get('fields', {})
+    label = fields.get(field_name, field_name)
+    return label
+
 # Function to get CSL mapping for a given Zotero item type
 def get_csl_mapping_for_zotero_item_type(schema, item_type):
     csl_types = schema.get('csl', {}).get('types', {})
@@ -52,20 +60,6 @@ def get_csl_mapping_for_zotero_item_type(schema, item_type):
 def get_csl_mapping_for_zotero_creator_type(schema, creator_type):
     csl_names = schema.get('csl', {}).get('names', {})
     return csl_names.get(creator_type, "-")  # ✅ replaced text with dash
-
-# UI labels for Zotero fields
-field_ui_labels = {
-    "title": "Title",
-    "abstractNote": "Abstract Note",
-    "bookTitle": "Book Title",
-    "publicationTitle": "Publication Title",
-    "series": "Series",
-}
-
-# Special field overrides
-special_field_overrides = {
-    "bookTitle": "publicationTitle"
-}
 
 # Function to generate the HTML based on the schema
 def generate_html(schema, schema_url, schema_version):
@@ -133,8 +127,8 @@ def generate_html(schema, schema_url, schema_version):
         for field in item['fields']:
             zotero_field = field['field']
             zotero_baseField = field.get('baseField', zotero_field)
-            lookup_field = special_field_overrides.get(zotero_field, zotero_baseField)
-            ui_label = field_ui_labels.get(zotero_field, zotero_field)
+            lookup_field = zotero_baseField
+            ui_label = get_field_label(schema, zotero_field)
             csl_variable = ''
             for category, fields in csl_fields.items():
                 if isinstance(fields, dict):
