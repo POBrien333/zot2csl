@@ -2,16 +2,21 @@ name: Generate Zotero to CSL Mappings HTML
 
 on:
   workflow_dispatch:  # Manual trigger
+  schedule:
+    - cron: '0 6 * * 1'  # Runs weekly on Mondays at 06:00 UTC
+
+permissions:
+  contents: write
 
 jobs:
   generate-html:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
@@ -23,19 +28,17 @@ jobs:
       - name: Generate HTML output
         run: |
           python generate_zot2csl.py
-
-      - name: Commit and push HTML output to repository
-        run: |
-          # Ensure the docs directory exists
           mkdir -p docs
-          # Move the generated file (index.html) to the docs directory
           mv index.html docs/index.html
-          
-          # Configure Git
+
+      - name: Commit and push if the HTML changed
+        run: |
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
-          
-          # Stage, commit, and push changes
           git add docs/index.html
-          git commit -m "Update Zotero to CSL HTML mapping - forced update"
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes to the generated HTML. Nothing to commit."
+          else
+            git commit -m "Update Zotero to CSL HTML mapping"
+            git push
+          fi
