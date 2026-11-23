@@ -3,7 +3,7 @@ name: Generate Zotero to CSL Mappings HTML
 on:
   workflow_dispatch:  # Manual trigger
   schedule:
-    - cron: '0 6 * * 1'  # Runs weekly on Mondays at 06:00 UTC
+    - cron: '0 6 * * 0'  # Runs weekly on Sundays at 06:00 UTC
 
 permissions:
   contents: write
